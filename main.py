@@ -1,9 +1,20 @@
 from tkinter import PhotoImage, StringVar, Label, Text, Button, END, Tk
 from random import choice
 
+"""
+Created by: Dagmawi Yimam 
+Github Profile Link: https://github.com/EternalShaggy
 
+The following program is a Wordle Solver that allows a user to solve a Wordle puzzle by using a sorting algorithm 
+on a text file containing every 5 letter word in the Enlglish Dictionary. 
+
+Instructions: Video
+"""
+
+#This class contains the main and only window in which the tkinter program will run in.
 class Wordle_Help():
     def __init__(self, root):
+
         self.root = root
         self.root.geometry("700x400")
         self.root.resizable(False, False)
@@ -11,9 +22,10 @@ class Wordle_Help():
 
         self.root.configure(bg="#6fc7c9")
 
+    #The "guesses" attribute holds the number of guesses the user has left
         self.guesses = 6
+    #The "previous" attribute holds the users previous wordle guess
         self.previous = ""
-
 
         self.header = Label(self.root, text="WORDLE HELPER", bg="#6fc7c9", font=("Comic Sans MS", 20, "bold"), fg="#373d82")
         self.header.place(x=230,y=3)
@@ -21,6 +33,8 @@ class Wordle_Help():
         self.textbox1 = Text(self.root, width=8, height=1, font=("Comic Sans MS", 20, "bold"), bg="#b2eced")
         self.textbox1.place(x=280, y=50)
         
+    #The following lines create Tkinter String Variables to hold the color values of the 5 squares. 
+    #They are originally all set to grey
         self.square1val = StringVar()
         self.square1val.set("Grey")
         self.square2val = StringVar()
@@ -32,6 +46,7 @@ class Wordle_Help():
         self.square5val = StringVar()
         self.square5val.set("Grey")
 
+    #The square1-5 labels are the square objects that display the state of the square1-5 values.
         self.square1 = Label(self.root, bg="grey", height=3, width=6)
         self.square1.place(x=225,y=100)
 
@@ -47,9 +62,11 @@ class Wordle_Help():
         self.square5 = Label(self.root, bg="grey", height=3, width=6)
         self.square5.place(x=425,y=100)
 
+    #This button sets all the squares back to their default color, grey.
         self.color_reset = Button(self.root, text="Cls", height=2,width=5, command=self.reset_color, bg="#81abdb", border=0)
         self.color_reset.place(x=170, y=125)
 
+    #The following buttons change the color value of their corresponding square. E.G "button1y" sets square1 to yellow.
         self.button1n = Button(self.root, text="n", height=1, width=1, bg="grey", command=lambda: self.change_square1("Grey"))
         self.button1y = Button(self.root, text="y", height=1, width=1, bg="yellow", command=lambda: self.change_square1("Yellow"))
         self.button1g = Button(self.root, text="g", height=1, width=1, bg="green", command=lambda: self.change_square1("Green"))
@@ -90,6 +107,7 @@ class Wordle_Help():
         self.button5y.place(x=440,y=150)
         self.button5g.place(x=455,y=150)
 
+
         self.filter = Button(self.root, text="FILTER", command=self.main, bg="#81abdb", width=7, height=2, border=0)
         self.filter.place(x=100,y=220)
 
@@ -102,6 +120,10 @@ class Wordle_Help():
         self.rectextbox = Text(self.root, width=50,height=10, bg="#b2eced", border=0)
         self.rectextbox.place(x=185,y=210)
 
+    
+    """This function uses a character array generated from the self.charr_array to filter through the main.txt file containing all the text files.  
+    The array generated must meet length and repetition requirements. The function then writes a randomly generated list of 5 words from the main.txt file to reccomend to the user to the dialog box.
+    """
     def main(self):
         wordl = self.char_array()
         if not (len(wordl)==5):
@@ -130,7 +152,9 @@ class Wordle_Help():
         return 0
 
 
-    #The following functions filters the text file fed to it by using the wordle rules, and the two arrays fed to it. I don't want to explain this right now.
+    """The following functions filters the text list fed to it by using the wordle rules, and the two arrays fed to it and returns the filtered test list.
+    E.G If the word list ['D', 'R', 'E', 'A', 'M'] and the color array list ["Green", "Grey", "Grey", "Grey", "Grey"] are passed through the function, all the words not starting with the letter D will be removed from the sauce list.
+    """
     def filterfunc(self, text, warray, carray):
         sauce = text
         for i in range(5):
@@ -145,10 +169,11 @@ class Wordle_Help():
                 sauce = self.yellow_remover(sauce, i, warray[i])
         return sauce
 
+    #Removes all words in a list that contain the forbidden character passed through it.
     def none_remover(self, lis, char):
         l=[]
         for i in lis:
-            if not (char in i):
+            if (char not in i):
                 l.append(i)
         return l
 
@@ -198,6 +223,7 @@ class Wordle_Help():
         file.truncate(0)
         file.close()
 
+#This function resets all the square1-5 attributes back to their default if they are not Green.
     def reset_color(self):
         if(self.square1val.get()!="Green"):
             self.change_square1("Grey")
@@ -228,7 +254,7 @@ class Wordle_Help():
             f.close()
             return [i.strip() for i in text]
 
-    #The following functions generates a character array containing the values of the textboxes containing a single character.
+    #The following functions generates a character array containing the values of the textboxes containing a single character. The array generated looks like ()
     def char_array(self):
         return [i for i in self.textbox1.get("1.0",END).strip()]
 
