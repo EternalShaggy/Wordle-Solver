@@ -169,15 +169,15 @@ class Wordle_Help():
                 sauce = self.yellow_remover(sauce, i, warray[i])
         return sauce
 
-    #Removes all words in a list that contain the forbidden character passed through it.
+    #Removes all words in a list that contain the forbidden character passed through it and then returns the list again.
     def none_remover(self, lis, char):
         l=[]
         for i in lis:
-            if (char not in i):
+            if not (char in i):
                 l.append(i)
         return l
 
-
+    #Finds all the words in a list that have a char at a given index and appends them to a seperate list name l. L is then returned.
     def green_remover(self, lis, index, char):
         l=[]
         for i in lis:
@@ -185,6 +185,7 @@ class Wordle_Help():
                 l.append(i)
         return l
 
+    #Finds all the words in a list that have a given character in them and appends them to a seperate list name l. L is then returned.
     def yellow_remover(self, lis, index, char):
         l=[]
         for i in lis:
@@ -192,6 +193,7 @@ class Wordle_Help():
                 l.append(i)
         return l
     
+    #Generates five random elements from a list and returns said elements in a seperate list named l. Only runs if the list passed through the function has 5 or more elements. 
     def ran(self, lis):
         l=[]
         num=len(lis)
@@ -207,6 +209,7 @@ class Wordle_Help():
         else:
             return ["NA" for i in range(5)]
 
+    #Resets all the state of the Wordle Solver to what it was when it first ran. The square1-5 values are reset to their default grey values, the number of guesses left is reset to 6, and the dialog and text box are cleared. 
     def reset(self):
         self.guesses = 6
 
@@ -223,7 +226,7 @@ class Wordle_Help():
         file.truncate(0)
         file.close()
 
-#This function resets all the square1-5 attributes back to their default if they are not Green.
+    #This function resets all the square1-5 attributes back to their default if they are not Green.
     def reset_color(self):
         if(self.square1val.get()!="Green"):
             self.change_square1("Grey")
@@ -236,7 +239,7 @@ class Wordle_Help():
         if(self.square5val.get()!="Green"):
             self.change_square5("Grey")  
             
-
+    # 
     def write_text(self, text):
         with open("manip.txt", "w") as f:
             f.write(text)
@@ -262,9 +265,11 @@ class Wordle_Help():
     def color_key(self):
         return [self.square1val.get()+"0", self.square2val.get()+"1", self.square3val.get()+"2", self.square4val.get()+"3", self.square5val.get()+"5"]
 
+    #Writes text to the dialog box
     def write_rectextbox(self, text):
         self.rectextbox.delete("1.0", END)
         self.rectextbox.insert("1.0", text)
+    
     
     def change_square1(self, color):
         self.square1.configure(bg=color)
